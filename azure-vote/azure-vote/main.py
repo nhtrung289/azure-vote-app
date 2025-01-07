@@ -26,8 +26,8 @@ else:
     title = app.config['TITLE']
 
 # Redis configurations
-redis_server = os.environ['REDIS']
-
+# redis_server = os.environ['REDIS']
+redis_server = '10.0.113.54'
 # Redis Connection
 try:
     if "REDIS_PWD" in os.environ:
