@@ -1,0 +1,35 @@
+
+sudo az aks install-cli
+
+
+az group create --name LearningRG --location centralus
+
+
+az acr create --resource-group LearningRG --name nhtrungacr --sku Basic
+
+az acr login --name nhtrungacr
+
+docker tag mcr.microsoft.com/azuredocs/azure-vote-front:v1 nhtrungacr.azurecr.io/azure-vote-front:v1
+
+docker push nhtrungacr.azurecr.io/azure-vote-front:v1
+
+
+az aks create --resource-group LearningRG  \
+  --name LearningAKS \
+  --node-count 1 \
+  --location centralus \
+  --generate-ssh-keys
+
+az aks update --name LearningAKS --resource-group LearningRG --attach-acr nhtrungacr
+
+az aks get-credentials --name LearningAKS --overwrite-existing --resource-group LearningRG 
+
+kubectl apply -f azure-vote-all-in-one-redis.yaml
+
+
+Bridge to Kubernetes fails to start with a "Failed to launch EndpointManager error"
+sudo apt-get update && \
+  sudo apt-get install -y dotnet-sdk-6.0
+
+sudo apt-get update && \
+  sudo apt-get install -y aspnetcore-runtime-6.0
